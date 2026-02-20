@@ -20,6 +20,13 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        val newsApiKey = providers.gradleProperty("NEWS_API_KEY")
+            .get()
+
+        buildConfigField("String", "NEWS_API_KEY", "\"$newsApiKey\"")
+
+        buildConfigField("String", "NEWS_SOURCE", "\"\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -58,11 +66,13 @@ android {
             dimension = "branding"
             applicationIdSuffix = ".bbc"
             versionNameSuffix = "-bbc"
+            buildConfigField("String", "NEWS_SOURCE", "\"bbc-news\"")
         }
         create("cnn") {
             dimension = "branding"
             applicationIdSuffix = ".cnn"
             versionNameSuffix = "-cnn"
+            buildConfigField("String", "NEWS_SOURCE", "\"cnn\"")
         }
     }
 }
@@ -87,6 +97,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.compose.runtime.livedata)
     ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
