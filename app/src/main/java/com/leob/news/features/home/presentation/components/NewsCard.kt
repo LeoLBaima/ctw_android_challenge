@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.leob.news.commons.components.HeadlineImage
 
 @Composable
 fun NewsCard(title: String, description: String, imageUrl: String?) {
@@ -17,7 +18,10 @@ fun NewsCard(title: String, description: String, imageUrl: String?) {
         Row(
             verticalAlignment = Alignment.Top,
         ) {
-            HeadlineImage(imageUrl = imageUrl)
+            HeadlineImage(
+                imageUrl = imageUrl,
+                modifier = Modifier.size(width = 100.dp, height = 60.dp)
+            )
             Spacer(
                 modifier = Modifier.size(8.dp)
             )

@@ -1,10 +1,12 @@
 package com.leob.news.features.home.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -24,11 +25,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.leob.news.R
 import com.leob.news.commons.components.DefaultTopBar
 import com.leob.news.commons.extensions.toDisplayPublishedAt
+import com.leob.news.features.detail.presentation.DetailActivity
+import com.leob.news.features.home.domain.models.Article
 import com.leob.news.features.home.domain.models.News
 import com.leob.news.features.home.presentation.components.NewsCard
 import com.leob.news.features.home.presentation.viewmodel.HomeViewModel
@@ -38,6 +42,7 @@ import com.leob.news.ui.theme.Grey
 import com.leob.news.ui.theme.NewsTheme
 import com.leob.news.ui.theme.Purple40
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.jvm.java
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
@@ -88,7 +93,7 @@ class HomeActivity : ComponentActivity() {
 
         ) {
             CircularProgressIndicator(
-                color = Purple40,
+                color = colorResource(R.color.app_color),
             )
         }
 
@@ -97,6 +102,13 @@ class HomeActivity : ComponentActivity() {
     @Composable
     fun SuccessContent(innerPadding: PaddingValues, news: News) {
         val scrollState = rememberScrollState()
+        val sortedArticles = news.articles.sortedByDescending { it.publishedAt }
+        val onArticleClick: (article: Article) -> Unit = { article ->
+            val detailActivityIntent = Intent(this, DetailActivity::class.java)
+            detailActivityIntent.putExtra("article", article)
+
+            startActivity(detailActivityIntent)
+        }
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -104,23 +116,28 @@ class HomeActivity : ComponentActivity() {
                 .fillMaxSize()
                 .verticalScroll(scrollState),
         ) {
-            news.articles.forEachIndexed { index, article ->
+            Spacer(modifier = Modifier.padding(16.dp))
+            sortedArticles.forEachIndexed { index, article ->
                 val publishedAt = article.publishedAt.toDisplayPublishedAt()
-                NewsCard(
-                    imageUrl = article.imageUrl,
-                    title = article.title ?: "",
-                    description = publishedAt.takeIf { it.isNotBlank() }
-                        ?.let { "Published at: $it" }
-                        .orEmpty(),
-                )
-                if (index < news.articles.size - 1) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        thickness = DividerDefaults.Thickness,
-                        color = Grey,
+                Column(
+                    modifier = Modifier.clickable { onArticleClick(article) }
+                ) {
+                    NewsCard(
+                        imageUrl = article.imageUrl,
+                        title = article.title ?: "",
+                        description = publishedAt.takeIf { it.isNotBlank() }
+                            ?.let { "Published at: $it" }
+                            .orEmpty(),
                     )
+                    if (index < news.articles.size - 1) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            thickness = DividerDefaults.Thickness,
+                            color = Grey,
+                        )
+                    }
+                    Spacer(modifier = Modifier.padding(8.dp))
                 }
-                Spacer(modifier = Modifier.padding(8.dp))
             }
         }
     }
