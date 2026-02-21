@@ -40,9 +40,7 @@ import com.leob.news.features.home.presentation.viewmodel.UiState
 import com.leob.news.ui.theme.Background
 import com.leob.news.ui.theme.Grey
 import com.leob.news.ui.theme.NewsTheme
-import com.leob.news.ui.theme.Purple40
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.jvm.java
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
