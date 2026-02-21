@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
@@ -26,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.leob.news.R
 import com.leob.news.commons.components.DefaultTopBar
+import com.leob.news.commons.extensions.toDisplayPublishedAt
 import com.leob.news.features.home.domain.models.News
 import com.leob.news.features.home.presentation.components.NewsCard
 import com.leob.news.features.home.presentation.viewmodel.HomeViewModel
@@ -48,12 +51,13 @@ class HomeActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     containerColor = Background,
-                ) { innerPadding ->
-                    Column {
+                    topBar = {
                         DefaultTopBar(
                             title = stringResource(R.string.app_name),
-                            padding = innerPadding,
                         )
+                    }
+                ) { innerPadding ->
+                    Column {
                         val uiState by viewModel.uiState.observeAsState()
                         when (uiState) {
                             is UiState.Loading -> LoadingContent(innerPadding)
@@ -92,15 +96,22 @@ class HomeActivity : ComponentActivity() {
 
     @Composable
     fun SuccessContent(innerPadding: PaddingValues, news: News) {
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(scrollState),
         ) {
             news.articles.forEachIndexed { index, article ->
+                val publishedAt = article.publishedAt.toDisplayPublishedAt()
                 NewsCard(
+                    imageUrl = article.imageUrl,
                     title = article.title ?: "",
+                    description = publishedAt.takeIf { it.isNotBlank() }
+                        ?.let { "Published at: $it" }
+                        .orEmpty(),
                 )
                 if (index < news.articles.size - 1) {
                     HorizontalDivider(
@@ -108,8 +119,8 @@ class HomeActivity : ComponentActivity() {
                         thickness = DividerDefaults.Thickness,
                         color = Grey,
                     )
-                    Spacer(modifier = Modifier.padding(8.dp))
                 }
+                Spacer(modifier = Modifier.padding(8.dp))
             }
         }
     }
