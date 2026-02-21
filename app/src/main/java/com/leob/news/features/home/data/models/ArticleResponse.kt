@@ -3,7 +3,6 @@ package com.leob.news.features.home.data.models
 import com.leob.news.features.home.domain.models.Article
 
 data class ArticleResponse(
-    val source: SourceResponse?,
     val author: String?,
     val title: String?,
     val description: String?,
@@ -14,7 +13,6 @@ data class ArticleResponse(
 )
 
 fun ArticleResponse.toDomain(): Article = Article(
-    source = source?.toDomain(),
     author = author,
     title = title,
     description = description,
