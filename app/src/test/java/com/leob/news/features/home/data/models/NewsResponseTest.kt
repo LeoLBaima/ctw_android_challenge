@@ -6,7 +6,7 @@ import org.junit.Test
 class NewsResponseTest {
 
     @Test
-    fun `toDomain maps list of articles`() {
+    fun `GIVEN NewsResponse with articles WHEN toDomain THEN maps list of articles`() {
         val response = NewsResponse(
             articles = listOf(
                 ArticleResponse(
@@ -40,7 +40,7 @@ class NewsResponseTest {
     }
 
     @Test
-    fun `toDomain handles null articles as empty list`() {
+    fun `GIVEN NewsResponse with null articles WHEN toDomain THEN returns empty list`() {
         val response = NewsResponse(articles = null)
 
         val domain = response.toDomain()
@@ -48,4 +48,3 @@ class NewsResponseTest {
         assertEquals(emptyList<Any>(), domain.articles)
     }
 }
-

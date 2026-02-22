@@ -6,7 +6,7 @@ import org.junit.Test
 class ArticleResponseTest {
 
     @Test
-    fun `toDomain maps fields and renames urlToImage to imageUrl`() {
+    fun `GIVEN ArticleResponse WHEN toDomain THEN maps fields and renames urlToImage to imageUrl`() {
         val dto = ArticleResponse(
             author = "a",
             title = "t",
@@ -28,4 +28,3 @@ class ArticleResponseTest {
         assertEquals("c", domain.content)
     }
 }
-

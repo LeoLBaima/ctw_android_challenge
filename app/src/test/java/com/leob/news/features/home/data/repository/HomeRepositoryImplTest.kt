@@ -14,7 +14,7 @@ import org.junit.Test
 class HomeRepositoryImplTest {
 
     @Test
-    fun `getNews trims sources and forwards optional apiKey then maps to domain`() = runTest {
+    fun `GIVEN HomeService response WHEN getNews THEN trims sources forwards optional apiKey and maps to domain`() = runTest {
         val service = mockk<HomeService>()
 
         val dto = NewsResponse(
@@ -31,7 +31,6 @@ class HomeRepositoryImplTest {
             )
         )
 
-        // repository uses BuildConfig constants; we assert it passes the expected values.
         val expectedSources = BuildConfig.NEWS_SOURCE.trim()
         val expectedApiKey = BuildConfig.NEWS_API_KEY.takeIf { it.isNotBlank() }
 
@@ -46,4 +45,3 @@ class HomeRepositoryImplTest {
         assertEquals("img", result.articles.first().imageUrl)
     }
 }
-
