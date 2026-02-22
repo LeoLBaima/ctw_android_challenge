@@ -1,7 +1,9 @@
 package com.leob.news.features.home.data.models
 
 import com.leob.news.features.home.domain.models.Article
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ArticleResponse(
     val author: String?,
     val title: String?,

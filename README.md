@@ -47,8 +47,8 @@ Notes:
 ## Architecture (high level)
 
 The code is organized by **feature** under `app/src/main/java/com/leob/news/features/*`:
-- `data/` – Retrofit services, repository implementations, DTOs/mappers
-- `domain/` – repository interfaces + domain models/use-cases (when needed)
+- `data/` – Retrofit services, repository implementations
+- `domain/` – repository interfaces + domain models
 - `presentation/` – Activities/Compose UI and ViewModels
 
 Cross-cutting app setup lives under `app/src/main/java/com/leob/news/config/*`.
@@ -66,6 +66,14 @@ Modules:
 - `HomeModule` (`features/home/di/HomeModule.kt`)
   - binds `HomeRepositoryImpl` to `HomeRepository`
   - provides `HomeService` from Retrofit
+
+## Libs Used
+- **Retrofit**
+- **Moshi**
+- **OkHttp**
+- **Hilt**
+- **Live Data**
+- **Jetpack Compose**
 
 ## Troubleshooting
 
