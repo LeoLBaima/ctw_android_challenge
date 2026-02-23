@@ -6,7 +6,7 @@ import org.junit.Test
 class NewsResponseTest {
 
     @Test
-    fun `GIVEN NewsResponse with articles WHEN toDomain THEN maps list of articles`() {
+    fun `GIVEN NewsResponse with articles WHEN toDomain THEN maps articles list`() {
         val response = NewsResponse(
             articles = listOf(
                 ArticleResponse(

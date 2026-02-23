@@ -40,7 +40,7 @@ class HomeServiceTest {
     }
 
     @Test
-    fun `GIVEN a mocked 200 response WHEN getNews THEN sends expected request and parses response`() = runTest {
+    fun `GIVEN mocked 200 response WHEN getNews THEN sends expected request AND parses response`() = runTest {
         server.enqueue(
             MockResponse()
                 .setResponseCode(200)

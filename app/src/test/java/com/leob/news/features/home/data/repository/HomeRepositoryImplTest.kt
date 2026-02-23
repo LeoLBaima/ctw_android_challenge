@@ -14,7 +14,7 @@ import org.junit.Test
 class HomeRepositoryImplTest {
 
     @Test
-    fun `GIVEN HomeService response WHEN getNews THEN trims sources forwards optional apiKey and maps to domain`() = runTest {
+    fun `GIVEN HomeService response WHEN getNews THEN trims sources AND forwards optional apiKey AND maps to domain`() = runTest {
         val service = mockk<HomeService>()
 
         val dto = NewsResponse(
